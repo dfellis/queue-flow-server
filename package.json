@@ -1,0 +1,36 @@
+{
+    "name": "queue-flow-server",
+    "description": "Massive data processing made easy",
+    "keywords": ["queue-flow-server", "queue-flow", "mapreduce", "queues"],
+    "homepage": "https://github.com/dfellis/queue-flow-server",
+    "author": "David Ellis <d.f.ellis@ieee.org>",
+    "version": "0.0.1",
+    "bugs": "https://github.com/dfellis/queue-flow-server/issues",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com:dfellis/queue-flow-server.git"
+    },
+    "main": "./lib/main",
+    "bin": "./bin/server.js",
+    "dependencies": {
+        "queue-flow": ">=0.5.32"
+    },
+    "optionalDependencies": {
+        "sloppy-queue-flow": "",
+        "parallel-queue-flow": ""
+    },
+    "devDependencies": {
+        "nodeunit": "*",
+        "docco": "*",
+        "uglify-js": "*",
+        "jscoverage": "0.2.5",
+        "complexity-report": "*"
+    },
+    "engines": {
+        "node": ">=0.6"
+    },
+    "scripts": {
+        "realpublish": "./prepublish.sh && npm publish",
+        "test": "nodeunit ./test/test.js"
+    }
+}
