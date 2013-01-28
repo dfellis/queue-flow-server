@@ -13,7 +13,8 @@
     "main": "./lib/main",
     "bin": "./bin/server.js",
     "dependencies": {
-        "queue-flow": ">=0.5.32"
+        "queue-flow": ">=0.5.32",
+        "commander": "*"
     },
     "optionalDependencies": {
         "sloppy-queue-flow": "",

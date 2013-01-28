@@ -20,7 +20,7 @@ Massive data processing made easy!
 queue-flow-server is **NOT** intended to be a publicly-facing server, at least at first. Will do whatever its told, will own (or pwn) box it resides on.
 
 ```sh
-queue-flow-server -p 11235 -c custom_config.json
+queue-flow-server -c custom_config.json
 ```
 
 RESTful interface:
