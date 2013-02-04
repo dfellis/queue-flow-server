@@ -38,21 +38,21 @@ RESTful interface:
 
 / - single-page web interface for stats & dynamic configuration
 
-/queue/<foo> - a queue-flow queue (listing of stats about queue if pulled up this way?)
+/queue/[foo] - a queue-flow queue (listing of stats about queue if pulled up this way?)
 
 /create - RESTful interface for defining a new queue (or queues). Expects raw JS code. This code may define other queues accessible from the server.
 
-/close/<foo> - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
+/close/[foo] - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
 
-/kill/<foo> - RESTful interface for killing the queue. Immediate halt of activity.
+/kill/[foo] - RESTful interface for killing the queue. Immediate halt of activity.
 
-/push/<foo> - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
+/push/[foo] - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
 
-/pull/<foo> - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
+/pull/[foo] - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
 
-/on/<foo>/(push|pull|empty|close|kill) - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
+/on/[foo]/(push|pull|empty|close|kill) - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
 
-/exists/<foo> - Specifies whether or not the queue exists on the server.
+/exists/[foo] - Specifies whether or not the queue exists on the server.
 
 # License (MIT)
 
