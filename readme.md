@@ -2,6 +2,17 @@
 
 Massive data processing made easy!
 
+# Goals
+
+queue-flow-server is not yet functional, all sections below the goals section are currently exploration on what the interface should be like. An outline of the goals for the project follows.
+
+1. Create a "baby map-reduce" system that is easier to use than Hadoop, though slower than such a compiled system.
+2. Be more *flexible* than Hadoop, allowing all of queue-flow's functional style to be used, rather than a fixed 1-2 of map then reduce and nothing else. If I want to filter-map-filter-reduce, let me!
+3. Develop a cluster-queue-flow constructor function tied to queue-flow-server that allows the queue processing to spread across multiple cores.
+4. Expand over time to allow master and slave queue-flow-servers so the clustering can spread across multiple machines (will need an algorithm to balance expected CPU time versus cross-server bandwidth available to decide how much should be spread to where)
+5. Provide a nice web interface for tracking statistics (how much data has been processed, what rate its going, where the bottleneck in the flow seems to be, etc.
+6. Maybe add an authentication layer in the future? Right now it's assumed that a firewall will be wrapped around it and only privileged apps will be able to communicate with it.
+
 # Install
 
 ## Setting up a server
@@ -40,6 +51,8 @@ RESTful interface:
 /pull/<foo> - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
 
 /on/<foo>/(push|pull|empty|close|kill) - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
+
+/exists/<foo> - Specifies whether or not the queue exists on the server.
 
 # License (MIT)
 
