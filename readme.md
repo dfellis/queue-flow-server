@@ -54,6 +54,30 @@ RESTful interface:
 
 /exists/[foo] - Specifies whether or not the queue exists on the server.
 
+JSON-RPC interface:
+
+Mirror the above, returning JSON objects instead of HTML.
+
+stats() -> /'s stats above
+
+config(updateObj) -> /'s config above; if updateObj is undefined, return the current config, otherwise set the specified config properties as defined in the object (updating, not replacing, so only the config you're interested in needs specifying).
+
+create(sourceCode) -> /create above with the raw source code string provided.
+
+close(queue) -> /close/[foo] above, where queue is the queue name.
+
+kill(queue) -> /kill/[foo] above.
+
+push(queue, arrayToEnqueue) -> /push/[foo] above. If arrayToEnqueue isn't an array, it enqueues a single item.
+
+pull(queue) -> /pull/[foo] above. Returns the oldest entry on the queue. Shouldn't run this on any queue with a handler.
+
+on(event, queue, sourceCode) -> /on/[foo]/(push|pull|empty|close|kill) above. Creates an event handler for the specified queue and event.
+
+exists(queue) -> /exists/[foo] above. Simply returns a boolean true/false. Useful for code to see if the desired queue has already been created on the server or not.
+
+Probably use [multitransport-jsonrpc](https://github.com/dfellis/multitransport-jsonrpc) once it's stabilized so processes that are pushing data constantly into the server and pulling results out to keep a steady TCP connection (using the TCP transport instead of the HTTP transport).
+
 # License (MIT)
 
 Copyright (C) 2013 by David Ellis
