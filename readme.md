@@ -34,49 +34,79 @@ queue-flow-server is **NOT** intended to be a publicly-facing server, at least a
 queue-flow-server -c custom_config.json
 ```
 
-RESTful interface:
+## RESTful interface:
 
-/ - single-page web interface for stats & dynamic configuration
+``/`` - single-page web interface for stats & dynamic configuration
 
-/queue/[foo] - a queue-flow queue (listing of stats about queue if pulled up this way?)
+``/queue/[foo]`` - a queue-flow queue (listing of stats about queue if pulled up this way?)
 
-/create - RESTful interface for defining a new queue (or queues). Expects raw JS code. This code may define other queues accessible from the server.
+``/create`` - RESTful interface for defining a new queue (or queues). Expects raw JS code. This code may define other queues accessible from the server.
 
-/close/[foo] - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
+``/close/[foo]`` - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
 
-/kill/[foo] - RESTful interface for killing the queue. Immediate halt of activity.
+``/kill/[foo]`` - RESTful interface for killing the queue. Immediate halt of activity.
 
-/push/[foo] - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
+``/push/[foo]`` - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
 
-/pull/[foo] - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
+``/pull/[foo]`` - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
 
-/on/[foo]/(push|pull|empty|close|kill) - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
+``/on/[foo]/(push|pull|empty|close|kill)`` - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
 
-/exists/[foo] - Specifies whether or not the queue exists on the server.
+``/exists/[foo]`` - Specifies whether or not the queue exists on the server.
 
-JSON-RPC interface:
+## JSON-RPC interface:
 
 Mirror the above, returning JSON objects instead of HTML.
 
-stats() -> /'s stats above
+``stats(queue, callback)`` -> ``/``'s stats above; if queue is undefined, return all stats, otherwise return the stats of the specified queue.
 
-config(updateObj) -> /'s config above; if updateObj is undefined, return the current config, otherwise set the specified config properties as defined in the object (updating, not replacing, so only the config you're interested in needs specifying).
+``config(updateObj, callback)`` -> ``/``'s config above; if updateObj is undefined, return the current config, otherwise set the specified config properties as defined in the object (updating, not replacing, so only the config you're interested in needs specifying).
 
-create(sourceCode) -> /create above with the raw source code string provided.
+``create(sourceCode, callback)`` -> ``/create`` above with the raw source code string provided.
 
-close(queue) -> /close/[foo] above, where queue is the queue name.
+``close(queue, callback)`` -> ``/close/[foo]`` above, where queue is the queue name.
 
-kill(queue) -> /kill/[foo] above.
+``kill(queue, callback)`` -> ``/kill/[foo]`` above.
 
-push(queue, arrayToEnqueue) -> /push/[foo] above. If arrayToEnqueue isn't an array, it enqueues a single item.
+``push(queue, arrayToEnqueue, callback)`` -> ``/push/[foo]`` above. If arrayToEnqueue isn't an array, it enqueues a single item.
 
-pull(queue) -> /pull/[foo] above. Returns the oldest entry on the queue. Shouldn't run this on any queue with a handler.
+``pull(queue, callback)`` -> ``/pull/[foo]`` above. Returns the oldest entry on the queue. Shouldn't run this on any queue with a handler.
 
-on(event, queue, sourceCode) -> /on/[foo]/(push|pull|empty|close|kill) above. Creates an event handler for the specified queue and event.
+``on(event, queue, sourceCode, callback)`` -> ``/on/[foo]/(push|pull|empty|close|kill)`` above. Creates an event handler for the specified queue and event.
 
-exists(queue) -> /exists/[foo] above. Simply returns a boolean true/false. Useful for code to see if the desired queue has already been created on the server or not.
+``exists(queue, callback)`` -> ``/exists/[foo]`` above. Simply returns a boolean true/false. Useful for code to see if the desired queue has already been created on the server or not.
 
 Probably use [multitransport-jsonrpc](https://github.com/dfellis/multitransport-jsonrpc) once it's stabilized so processes that are pushing data constantly into the server and pulling results out to keep a steady TCP connection (using the TCP transport instead of the HTTP transport).
+
+## Client Node.js interface:
+
+Mimic the ``queue-flow`` interface as much as possible.
+
+```js
+var qfs = require('queue-flow-server').client;
+
+qfs.stats(callback); // Global stats
+
+qfs(queue).stats(callback); // Stats for specified queue
+
+qfs.config(updateObj, callback); // Read/update config of server
+
+qfs.create(function() {
+    // Source code of queue creation goes here. Function is never run locally, but source code extracted from the function body.
+}, callback);
+
+qfs(queue).close(callback); // Close the specified queue
+
+qfs(queue).kill(callback); // Kill the specified queue
+
+qfs(queue).push(val1, val2, val3, ... valn, callback) // Figures out if the callback is provided based on whether or not the last value is a function; you can't JSON-encode functions.
+
+qfs(queue).pull(callback); // Pulls a value off of the queue
+
+qfs(queue).on('event', handlerFunc, callback); // Turns the handlerFunc into source code to eval on the server, don't expect closures to work
+
+qfs.exists(queue, callback); // Indicates whether or not the queue exists.
+```
 
 # License (MIT)
 
