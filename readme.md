@@ -108,6 +108,33 @@ qfs(queue).on('event', handlerFunc, callback); // Turns the handlerFunc into sou
 qfs.exists(queue, callback); // Indicates whether or not the queue exists.
 ```
 
+## Possible Config Options
+
+```js
+var config = {
+    transports: {
+        rest: 12345, // Port number for RESTful interface.
+        jsonRpcHttp: 12346, // Standard JSON-RPC interface, plain "jsonRpc" should be a synonym.
+        jsonRpcTcp: 12347, // JSON-RPC over a persistent TCP connection -- useful when you're shoveling tons of data at the server.
+    },
+    isMaster: true, // Specify whether this queue-flow-server will be the master over a set of servers. Will be ignored at first.
+    processes: 4, // Number of processes queue-flow-server should occupy on the host machine.
+    stats: {
+        enabled: true, // Turn stats on or off for the server. If you're not using it, you get a bit more oomph out of the server.
+        statsdServer: 'localhost:6789', // host and port of a statsd server to stream stats to, if desired.
+    },
+    modules: {
+        q: 'queue-flow>=0.5.33', // Listing of available modules on the server. The key is the variable name they will use and the value
+        // is the name of the module on NPM and optionally the version number. Because these config values can be changed dynamically
+        // queue-flow-server will depend on NPM to download and install modules on-the-fly
+        parallel: 'parallel-queue-flow',
+        sloppy: 'sloppy-queue-flow',
+        l: 'lambda-js',
+        secretModule: 'git://git@github.com:myCompany/mySecretModule.git'
+    }
+};
+```
+
 # License (MIT)
 
 Copyright (C) 2013 by David Ellis
