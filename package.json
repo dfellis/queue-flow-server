@@ -15,6 +15,7 @@
     "dependencies": {
         "queue-flow": ">=0.5.32",
         "commander": "*",
+        "deepconfig": "*",
         "npm": "*"
     },
     "optionalDependencies": {
