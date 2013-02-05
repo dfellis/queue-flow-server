@@ -18,7 +18,6 @@ var config = {
         enabled: true
     },
     modules: {
-        q: 'queue-flow>=0.5.33',
         parallel: 'parallel-queue-flow',
         sloppy: 'sloppy-queue-flow',
         l: 'lambda-js'

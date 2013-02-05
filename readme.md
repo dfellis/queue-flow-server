@@ -138,7 +138,7 @@ var config = {
             // statsd server to stream stats to, if desired.
     },
     modules: {
-        q: 'queue-flow>=0.5.33', // Listing of available modules
+        q: 'queue-flow@0.5.33', // Listing of available modules
             // on the server. The key is the variable name they
             // will use and the value is the name of the module
             // on NPM and optionally the version number. Because
