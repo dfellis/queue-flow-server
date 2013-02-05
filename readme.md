@@ -92,18 +92,23 @@ qfs(queue).stats(callback); // Stats for specified queue
 qfs.config(updateObj, callback); // Read/update config of server
 
 qfs.create(function() {
-    // Source code of queue creation goes here. Function is never run locally, but source code extracted from the function body.
+    // Source code of queue creation goes here. Function is never
+    // run locally, but source code extracted from the function body.
 }, callback);
 
 qfs(queue).close(callback); // Close the specified queue
 
 qfs(queue).kill(callback); // Kill the specified queue
 
-qfs(queue).push(val1, val2, val3, ... valn, callback) // Figures out if the callback is provided based on whether or not the last value is a function; you can't JSON-encode functions.
+qfs(queue).push(val1, val2, val3, ... valn, callback) // Figures out 
+    // if the callback is provided based on whether or not the last
+    // value is a function; you can't JSON-encode functions.
 
 qfs(queue).pull(callback); // Pulls a value off of the queue
 
-qfs(queue).on('event', handlerFunc, callback); // Turns the handlerFunc into source code to eval on the server, don't expect closures to work
+qfs(queue).on('event', handlerFunc, callback); // Turns the
+    // handlerFunc into source code to eval on the server, don't
+    // expect closures to work
 
 qfs.exists(queue, callback); // Indicates whether or not the queue exists.
 ```
@@ -114,19 +119,32 @@ qfs.exists(queue, callback); // Indicates whether or not the queue exists.
 var config = {
     transports: {
         rest: 12345, // Port number for RESTful interface.
-        jsonRpcHttp: 12346, // Standard JSON-RPC interface, plain "jsonRpc" should be a synonym.
-        jsonRpcTcp: 12347, // JSON-RPC over a persistent TCP connection -- useful when you're shoveling tons of data at the server.
+        jsonRpcHttp: 12346, // Standard JSON-RPC interface, plain
+            // "jsonRpc" should be a synonym.
+        jsonRpcTcp: 12347, // JSON-RPC over a persistent TCP
+            // connection -- useful when you're shoveling tons of
+            // data at the server.
     },
-    isMaster: true, // Specify whether this queue-flow-server will be the master over a set of servers. Will be ignored at first.
-    processes: 4, // Number of processes queue-flow-server should occupy on the host machine.
+    isMaster: true, // Specify whether this queue-flow-server will
+        // be the master over a set of servers. Will be ignored
+        // at first.
+    processes: 4, // Number of processes queue-flow-server should
+        // occupy on the host machine.
     stats: {
-        enabled: true, // Turn stats on or off for the server. If you're not using it, you get a bit more oomph out of the server.
-        statsdServer: 'localhost:6789', // host and port of a statsd server to stream stats to, if desired.
+        enabled: true, // Turn stats on or off for the server.
+            // If you're not using it, you get a bit more oomph
+            // out of the server.
+        statsdServer: 'localhost:6789', // host and port of a
+            // statsd server to stream stats to, if desired.
     },
     modules: {
-        q: 'queue-flow>=0.5.33', // Listing of available modules on the server. The key is the variable name they will use and the value
-        // is the name of the module on NPM and optionally the version number. Because these config values can be changed dynamically
-        // queue-flow-server will depend on NPM to download and install modules on-the-fly
+        q: 'queue-flow>=0.5.33', // Listing of available modules
+            // on the server. The key is the variable name they
+            // will use and the value is the name of the module
+            // on NPM and optionally the version number. Because
+            // these config values can be changed dynamically
+            // queue-flow-server will depend on NPM to download
+            // and install modules on-the-fly
         parallel: 'parallel-queue-flow',
         sloppy: 'sloppy-queue-flow',
         l: 'lambda-js',
