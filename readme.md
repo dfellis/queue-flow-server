@@ -83,7 +83,7 @@ Probably use [multitransport-jsonrpc](https://github.com/dfellis/multitransport-
 Mimic the ``queue-flow`` interface as much as possible.
 
 ```js
-var qfs = require('queue-flow-server').client;
+var qfs = require('queue-flow-server').client(host, port, config);
 
 qfs.stats(callback); // Global stats
 
