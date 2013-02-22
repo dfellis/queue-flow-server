@@ -36,31 +36,33 @@ queue-flow-server -c custom_config.json
 
 ## RESTful interface:
 
-``/`` - single-page web interface for stats & dynamic configuration
+``GET /`` - single-page web interface for stats & dynamic configuration
 
-``/queue/[foo]`` - a queue-flow queue (listing of stats about queue if pulled up this way?)
+``GET /stats/[foo]`` - RESTful version of stats output from above. The queue ``[foo]`` is optional.
 
-``/create`` - RESTful interface for defining a new queue (or queues). Expects raw JS code. This code may define other queues accessible from the server.
+``POST /config`` - RESTful version of web page above for reading/writing config. If no config is provided the current config is returned, otherwise the config is altered and returned.
 
-``/close/[foo]`` - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
+``POST /create`` - RESTful interface for defining a new queue (or queues). Expects raw JS code. This code may define other queues accessible from the server.
 
-``/kill/[foo]`` - RESTful interface for killing the queue. Immediate halt of activity.
+``GET /close/[foo]`` - RESTful interface for closing the queue. Stops accepting new data, finishes processing old.
 
-``/push/[foo]`` - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
+``GET /kill/[foo]`` - RESTful interface for killing the queue. Immediate halt of activity.
 
-``/pull/[foo]`` - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
+``POST /push/[foo]`` - RESTful interface for pushing data onto the queue. If given an array it assumes a bulk push (if you want to push an array wrap it in an array: [[1, 2, 3, 4, 5]] If given a queue name that doesn't exist, it auto-create it.
 
-``/on/[foo]/(push|pull|empty|close|kill)`` - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
+``GET /pull/[foo]`` - RESTful interface for pulling data off of a queue. (Need to alter queue-flow to allow this.) Useful for treating queue-flow-server as a pure queue (or a queue-process-requeue stack)
 
-``/exists/[foo]`` - Specifies whether or not the queue exists on the server.
+``POST /on/[foo]/(push|pull|empty|close|kill)`` - RESTful interface for registering a new event handler. Must be a JS function. (Can be registered during create, too.)
+
+``GET /exists/[foo]`` - Specifies whether or not the queue exists on the server.
 
 ## JSON-RPC interface:
 
 Mirror the above, returning JSON objects instead of HTML.
 
-``stats(queue, callback)`` -> ``/``'s stats above; if queue is undefined, return all stats, otherwise return the stats of the specified queue.
+``stats(queue, callback)`` -> ``/stats``'s stats above; if queue is undefined, return all stats, otherwise return the stats of the specified queue.
 
-``config(updateObj, callback)`` -> ``/``'s config above; if updateObj is undefined, return the current config, otherwise set the specified config properties as defined in the object (updating, not replacing, so only the config you're interested in needs specifying).
+``config(updateObj, callback)`` -> ``/config``'s config above; if updateObj is undefined, return the current config, otherwise set the specified config properties as defined in the object (updating, not replacing, so only the config you're interested in needs specifying).
 
 ``create(sourceCode, callback)`` -> ``/create`` above with the raw source code string provided.
 

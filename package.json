@@ -15,8 +15,9 @@
     "dependencies": {
         "queue-flow": ">=0.5.32",
         "commander": "*",
-        "deepconfig": "*",
-        "npm": "*"
+        "deepmerge": "*",
+        "npm": "*",
+        "multitransport-jsonrpc": ">=0.2.10"
     },
     "optionalDependencies": {
         "sloppy-queue-flow": ">=0.1.12",
